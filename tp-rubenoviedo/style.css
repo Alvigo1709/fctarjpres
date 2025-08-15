@@ -1,81 +1,101 @@
-:root{
-  /* 1) Tamaño flexible de la tarjeta, pensado para móvil y escritorio */
-  --card-width: min(92vw, 440px);  /* 2) Ancho: 92% de pantalla o 440px máx */
-  --card-ratio: 1.78;              /* 3) Alto = ancho * 1.78 (vertical) */
+:root{ /* 1) Variables de tamaño */
+  --card-width: min(92vw, 440px); /* 2) Ancho flexible */
+  --card-ratio: 1.78;             /* 3) Alto = ancho * 1.78 (vertical) */
 }
 
 *{
-  box-sizing: border-box;                 /* 4) Cálculo consistente de cajas */
-  -webkit-tap-highlight-color: transparent; /* 5) Sin flash al tocar en móviles */
+  box-sizing: border-box;                 /* 4) Cajas consistentes */
+  -webkit-tap-highlight-color: transparent; /* 5) Sin flash al tocar */
 }
 
-html, body{
-  height: 100%;                /* 6) Ocupan todo el alto de la ventana */
-  margin: 0;                   /* 7) Quitamos márgenes por defecto */
-  background: #fff;            /* 8) Fondo blanco */
+html,body{
+  height: 100%;                 /* 6) Pantalla completa */
+  margin: 0;                    /* 7) Sin márgenes */
+  background: #fff;             /* 8) Fondo blanco */
   font-family: system-ui, sans-serif; /* 9) Fuente del sistema */
 }
 
 .viewport{
-  height: 100%;                /* 10) Contenedor a pantalla completa */
-  display: grid;               /* 11) Usamos grid */
-  place-items: center;         /* 12) Centrado perfecto */
-  perspective: 1200px;         /* 13) Profundidad para 3D si la usamos */
+  height: 100%;                 /* 10) Ocupa todo */
+  display: grid;                /* 11) Grid */
+  place-items: center;          /* 12) Centrado */
+  perspective: 1200px;          /* 13) Profundidad 3D (si se usa) */
 }
 
 .card{
-  position: relative;                                /* 14) Referencia para posicionar hijos absolutos */
-  width: var(--card-width);                          /* 15) Ancho de tarjeta */
-  height: calc(var(--card-width) * var(--card-ratio));/* 16) Alto según relación */
-  border-radius: 16px;                               /* 17) Esquinas redondeadas */
-  overflow: hidden;                                  /* 18) Recorta desbordes */
-  box-shadow: 0 10px 30px rgba(0,0,0,.15);           /* 19) Sombra sutil */
+  position: relative;                                /* 14) Referencia pos abs */
+  width: var(--card-width);                          /* 15) Ancho */
+  height: calc(var(--card-width) * var(--card-ratio));/* 16) Alto */
+  border-radius: 16px;                               /* 17) Esquinas */
+  overflow: hidden;                                  /* 18) Recorte */
+  box-shadow: 0 10px 30px rgba(0,0,0,.15);           /* 19) Sombra */
 }
 
 .face{
-  position: absolute;         /* 20) Ambas caras apiladas */
-  inset: 0;                   /* 21) Llenan todo el contenedor */
-  width: 100%; height: 100%;  /* 22) Tamaño completo */
-  object-fit: cover;          /* 23) Encaje sin deformar */
-  backface-visibility: hidden;/* 24) Oculta lado trasero */
-  -webkit-backface-visibility: hidden; /* 25) Compat Safari/iOS */
-  -webkit-user-drag: none;    /* 26) No arrastrable en Safari */
-  user-select: none;          /* 27) No seleccionable */
-  transition: transform 600ms cubic-bezier(.2,.8,.2,1); /* 28) Animación suave */
+  position: absolute; inset: 0;                      /* 20) Ocupar todo */
+  width: 100%; height: 100%;                         /* 21) Tamaño completo */
+  object-fit: cover;                                 /* 22) Encaje sin deformar */
+  backface-visibility: hidden;                       /* 23) Oculta dorso */
+  -webkit-backface-visibility: hidden;               /* 24) Safari */
+  -webkit-user-drag: none; user-select: none;        /* 25) No arrastrable/seleccionable */
+  transition: transform 600ms cubic-bezier(.2,.8,.2,1); /* 26) Animación suave */
 }
 
-/* 29) Giro por CARAS (no giramos el contenedor) para evitar espejos */
-.front{ transform: rotateY(0deg); }       /* 30) Frente visible por defecto */
-.back { transform: rotateY(-180deg); }    /* 31) Reverso volteado internamente */
-.card.flip .front{ transform: rotateY(180deg); } /* 32) Frente se oculta al girar */
-.card.flip .back { transform: rotateY(0deg); }   /* 33) Reverso aparece derecho */
+/* 27) Giro por CARAS (evita espejo en reverso) */
+.front{ transform: rotateY(0deg); }       /* 28) Frente visible */
+.back { transform: rotateY(-180deg); }    /* 29) Reverso volteado internamente */
+.card.flip .front{ transform: rotateY(180deg); } /* 30) Frente se oculta */
+.card.flip .back { transform: rotateY(0deg); }   /* 31) Reverso aparece derecho */
 
-/* 34) Hotspots: capa invisible por encima de la cara frontal */
+/* 32) ZONA DE GIRO: franja superior transparente */
+.flip-zone{
+  position: absolute;                     /* 33) Posición absoluta dentro de .card */
+  top: 0; left: 0;                         /* 34) Arriba a la izquierda */
+  width: 100%;                             /* 35) Ancho completo */
+  height: 38%;                             /* 36) Solo el 38% superior (ajustable) */
+  background: transparent;                 /* 37) Invisible */
+  z-index: 3;                              /* 38) Encima de hotspots */
+  cursor: pointer;                         /* 39) Indica que se puede tocar/clicar */
+}
+
+/* 40) HOTSPOTS: capa para los links del frente */
 .hotspots{
-  position: absolute; inset: 0;          /* 35) Cubre toda la tarjeta */
-  pointer-events: none;                   /* 36) Desactiva clicks por defecto */
+  position: absolute; inset: 0;            /* 41) Cubre la tarjeta */
+  z-index: 2;                               /* 42) Encima de las imágenes, debajo de .flip-zone */
+  pointer-events: none;                     /* 43) Bloquea eventos fuera de los <a> */
 }
+
+/* 44) Cada hotspot es un <a> posicionado por porcentaje */
 .hotspot{
-  position: absolute;                     /* 37) Cada <a> se posiciona con top/left */
-  display: block;                         /* 38) Se comporta como caja clicable */
-  pointer-events: auto;                   /* 39) Reactiva clicks sólo en el área */
-  width: 18%;                             /* 40) Tamaño base del botón (ajustable) */
-  aspect-ratio: 1 / 1;                    /* 41) Mantener forma cuadrada */
-  transform: translate(-50%, -50%);       /* 42) Centrado respecto a top/left */
-  /* 43) DEBUG opcional: mostrar bordes
-  outline: 2px dashed rgba(0,0,0,.25);
+  position: absolute; display: block;       /* 45) Caja clicable */
+  pointer-events: auto;                     /* 46) Reactiva clicks solo en el área */
+  transform: translate(-50%, -50%);         /* 47) Centrado relativo a top/left */
+  /* 48) DEBUG: para ubicar los cuadros, descomenta:
+  outline: 2px dashed rgba(0,0,0,.3);
   */
 }
-/* 44) Ocultar hotspots cuando se ve el reverso */
+
+/* 49) Ocultar hotspots cuando vemos la cara trasera */
 .card.flip .hotspots{ display: none; }
 
-/* 45) Posiciones de cada hotspot (valores relativos en %) */
-/* 46) Ubica cada círculo sobre su icono en la imagen frontal. Ajusta top/left si hace falta. */
-.hs-whatsapp{  left: 20%; top: 72%; }   /* 47) Teléfono/WhatsApp */
-.hs-instagram{ left: 20%; top: 79%; }   /* 48) Instagram */
-.hs-web{       left: 28%; top: 92%; width: 70%; aspect-ratio: auto; } 
-/* 49) Para web cubrimos icono + texto; por eso ancho mayor y sin relación fija */
-
-/* 50) CONSEJO: si quieres ajustar al milímetro en móvil, activa el outline de .hotspot
-      temporalmente y mueve los % de top/left hasta que calcen con tus iconos. */
+/* 50) Posicionamiento de cada hotspot (ajusta si tus iconos cambian) */
+.hs-whatsapp{
+  left: 20%;             /* 51) X relativo */
+  top: 72%;              /* 52) Y relativo */
+  width: 18%;            /* 53) Tamaño (aprox diámetro del icono) */
+  aspect-ratio: 1/1;     /* 54) Cuadrado */
+}
+.hs-instagram{
+  left: 20%;             /* 55) X relativo */
+  top: 79%;              /* 56) Y relativo */
+  width: 18%;            /* 57) Tamaño */
+  aspect-ratio: 1/1;     /* 58) Cuadrado */
+}
+.hs-web{
+  left: 50%;             /* 59) Centrado horizontal para cubrir icono + texto web */
+  top: 92%;              /* 60) Posición vertical de la línea de web */
+  width: 80%;            /* 61) Ancho amplio para cubrir icono + “WWW…” */
+  height: 8%;            /* 62) Altura de la franja del texto web */
+  transform: translate(-50%, -50%); /* 63) Centrar el rectángulo */
+}
 
