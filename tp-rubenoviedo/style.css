@@ -80,22 +80,23 @@ html,body{
 
 /* 50) Posicionamiento de cada hotspot (ajusta si tus iconos cambian) */
 .hs-whatsapp{
-  left: 20%;             /* 51) X relativo */
-  top: 72%;              /* 52) Y relativo */
-  width: 18%;            /* 53) Tamaño (aprox diámetro del icono) */
-  aspect-ratio: 1/1;     /* 54) Cuadrado */
+  left: 50%;             /* Centrado horizontal para cubrir icono + texto web */
+  top: 67%;              /* Posición vertical de la línea de web */
+  width: 80%;            /* Ancho amplio para cubrir icono + “WWW…” */
+  height: 8%;            /* Altura de la franja del texto web */
+  transform: translate(-50%, -50%); /* Centrar el rectángulo */
 }
 .hs-instagram{
-  left: 20%;             /* 55) X relativo */
-  top: 79%;              /* 56) Y relativo */
-  width: 18%;            /* 57) Tamaño */
-  aspect-ratio: 1/1;     /* 58) Cuadrado */
+  left: 50%;             /* Centrado horizontal para cubrir icono + texto web */
+  top: 74%;              /* Posición vertical de la línea de web */
+  width: 80%;            /* Ancho amplio para cubrir icono + “WWW…” */
+  height: 8%;            /* Altura de la franja del texto web */
+  transform: translate(-50%, -50%); /* Centrar el rectángulo */
 }
 .hs-web{
-  left: 50%;             /* 59) Centrado horizontal para cubrir icono + texto web */
-  top: 92%;              /* 60) Posición vertical de la línea de web */
-  width: 80%;            /* 61) Ancho amplio para cubrir icono + “WWW…” */
-  height: 8%;            /* 62) Altura de la franja del texto web */
-  transform: translate(-50%, -50%); /* 63) Centrar el rectángulo */
+  left: 50%;             /* Centrado horizontal para cubrir icono + texto web */
+  top: 87%;              /* Posición vertical de la línea de web */
+  width: 80%;            /* Ancho amplio para cubrir icono + “WWW…” */
+  height: 8%;            /* Altura de la franja del texto web */
+  transform: translate(-50%, -50%); /* Centrar el rectángulo */
 }
-
