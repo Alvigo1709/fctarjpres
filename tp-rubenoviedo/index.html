@@ -1,69 +1,65 @@
-
-<!doctype html>
-<html lang="es">
-<head>
-  <meta charset="utf-8" />
+<!doctype html> <!-- 1) HTML5 -->
+<html lang="es"> <!-- 2) Idioma -->
+<head> <!-- 3) Cabecera -->
+  <meta charset="utf-8" /> <!-- 4) UTF-8 -->
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <title>Tarjeta Interactiva</title>
-  <!-- Manifest para instalar la PWA -->
-  <link rel="manifest" href="manifest.webmanifest" />
-  <!-- Color de la barra del sistema -->
-  <meta name="theme-color" content="#ffffff" />
-  <!-- Meta Apple para que se vea como app en iOS -->
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="apple-mobile-web-app-title" content="Tarjeta" />
-  <!-- CSS principal -->
-  <link rel="stylesheet" href="style.css?v=7" />
-</head>
-<body>
-  <main class="viewport">
-    <div class="card" id="card" aria-label="Tarjeta de presentación interactiva">
-      <!-- Cara frontal (imagen delantera) -->
-      <img class="face front" src="frontruben.png?v=7" alt="Front Ruben" draggable="false">
-      <!-- Cara trasera (imagen con QR) -->
-      <img class="face back"  src="backruben.png?v=7"  alt="Back Ruben"  draggable="false">
+  <!-- 5) Viewport; sin zoom para evitar doble‑tap zoom -->
 
-      <!-- Hotspots: áreas clicables SOLO para la cara frontal -->
+  <title>Tarjeta Interactiva</title> <!-- 6) Título -->
+
+  <link rel="manifest" href="manifest.webmanifest" /> <!-- 7) PWA manifest -->
+  <meta name="theme-color" content="#ffffff" />       <!-- 8) Color de barra -->
+  <meta name="apple-mobile-web-app-capable" content="yes" /> <!-- 9) iOS modo app -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" /> <!-- 10) iOS barra -->
+  <meta name="apple-mobile-web-app-title" content="Tarjeta" /> <!-- 11) Título iOS -->
+
+  <link rel="stylesheet" href="style.css?v=8" /> <!-- 12) CSS con rompedor de caché -->
+</head>
+<body> <!-- 13) Cuerpo -->
+  <main class="viewport"> <!-- 14) Contenedor centrado -->
+    <div class="card" id="card" aria-label="Tarjeta de presentación interactiva">
+      <!-- 15) Frente -->
+      <img class="face front" src="frontruben.png?v=8" alt="Front Ruben" draggable="false">
+      <!-- 16) Reverso -->
+      <img class="face back"  src="backruben.png?v=8"  alt="Back Ruben"  draggable="false">
+
+      <!-- 17) ZONA DE GIRO: solo la parte superior acepta el click/tap para girar -->
+      <div id="flip-zone" class="flip-zone" aria-hidden="true"></div>
+
+      <!-- 18) HOTSPOTS: áreas clicables del frente (WhatsApp, Instagram y Web) -->
       <div class="hotspots" aria-hidden="true">
-        <!-- WhatsApp: zona sobre el icono del teléfono -->
+        <!-- 19) WhatsApp -->
         <a class="hotspot hs-whatsapp"
            href="https://wa.me/573212698837"
            target="_blank" rel="noopener"
            aria-label="Abrir WhatsApp"></a>
-        <!-- Instagram: zona sobre el icono de Instagram -->
+
+        <!-- 20) Instagram -->
         <a class="hotspot hs-instagram"
            href="https://instagram.com/fertilitycare.col"
            target="_blank" rel="noopener"
            aria-label="Abrir Instagram"></a>
-        <!-- Sitio web: zona sobre el icono y texto de la web -->
+
+        <!-- 21) Sitio web (icono + texto) -->
         <a class="hotspot hs-web"
            href="https://www.fertilitycare.com.co"
            target="_blank" rel="noopener"
            aria-label="Abrir sitio web"></a>
       </div>
-    </div>
-  </main>
+    </div> <!-- 22) Fin de .card -->
+  </main> <!-- 23) Fin de .viewport -->
 
-  <!-- Lógica de giro / UX -->
-  <script src="app.js?v=7"></script>
+  <script src="app.js?v=8"></script> <!-- 24) Lógica -->
 
-  <!-- Registro del Service Worker para modo offline -->
+  <!-- 25) Registro del Service Worker (modo offline) -->
   <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(console.error);
+    if ('serviceWorker' in navigator) {                     // 26) Soporte SW
+      window.addEventListener('load', () => {               // 27) Tras cargar
+        navigator.serviceWorker.register('./sw.js')         // 28) Registrar SW
+          .catch(err => console.error('SW registro falló:', err)); // 29) Log error
       });
     }
   </script>
-</body>
-</html>
+</body> <!-- 30) Fin del body -->
+</html> <!-- 31) Fin del HTML -->
 
-<!--
-DOCUMENTACIÓN:
-- <link rel="manifest"> expone la info de instalación (iconos, nombre, start_url).
-- .face front/back son las dos caras de la tarjeta.
-- .hotspots contiene <a> invisibles posicionados encima de los iconos del frente.
-- Cada <a> tiene su link: WhatsApp (wa.me), Instagram y Web.
-- El SW (sw.js) cachea archivos para uso offline.
--->
