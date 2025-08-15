@@ -1,1 +1,81 @@
+:root{
+  /* 1) Tamaño flexible de la tarjeta, pensado para móvil y escritorio */
+  --card-width: min(92vw, 440px);  /* 2) Ancho: 92% de pantalla o 440px máx */
+  --card-ratio: 1.78;              /* 3) Alto = ancho * 1.78 (vertical) */
+}
+
+*{
+  box-sizing: border-box;                 /* 4) Cálculo consistente de cajas */
+  -webkit-tap-highlight-color: transparent; /* 5) Sin flash al tocar en móviles */
+}
+
+html, body{
+  height: 100%;                /* 6) Ocupan todo el alto de la ventana */
+  margin: 0;                   /* 7) Quitamos márgenes por defecto */
+  background: #fff;            /* 8) Fondo blanco */
+  font-family: system-ui, sans-serif; /* 9) Fuente del sistema */
+}
+
+.viewport{
+  height: 100%;                /* 10) Contenedor a pantalla completa */
+  display: grid;               /* 11) Usamos grid */
+  place-items: center;         /* 12) Centrado perfecto */
+  perspective: 1200px;         /* 13) Profundidad para 3D si la usamos */
+}
+
+.card{
+  position: relative;                                /* 14) Referencia para posicionar hijos absolutos */
+  width: var(--card-width);                          /* 15) Ancho de tarjeta */
+  height: calc(var(--card-width) * var(--card-ratio));/* 16) Alto según relación */
+  border-radius: 16px;                               /* 17) Esquinas redondeadas */
+  overflow: hidden;                                  /* 18) Recorta desbordes */
+  box-shadow: 0 10px 30px rgba(0,0,0,.15);           /* 19) Sombra sutil */
+}
+
+.face{
+  position: absolute;         /* 20) Ambas caras apiladas */
+  inset: 0;                   /* 21) Llenan todo el contenedor */
+  width: 100%; height: 100%;  /* 22) Tamaño completo */
+  object-fit: cover;          /* 23) Encaje sin deformar */
+  backface-visibility: hidden;/* 24) Oculta lado trasero */
+  -webkit-backface-visibility: hidden; /* 25) Compat Safari/iOS */
+  -webkit-user-drag: none;    /* 26) No arrastrable en Safari */
+  user-select: none;          /* 27) No seleccionable */
+  transition: transform 600ms cubic-bezier(.2,.8,.2,1); /* 28) Animación suave */
+}
+
+/* 29) Giro por CARAS (no giramos el contenedor) para evitar espejos */
+.front{ transform: rotateY(0deg); }       /* 30) Frente visible por defecto */
+.back { transform: rotateY(-180deg); }    /* 31) Reverso volteado internamente */
+.card.flip .front{ transform: rotateY(180deg); } /* 32) Frente se oculta al girar */
+.card.flip .back { transform: rotateY(0deg); }   /* 33) Reverso aparece derecho */
+
+/* 34) Hotspots: capa invisible por encima de la cara frontal */
+.hotspots{
+  position: absolute; inset: 0;          /* 35) Cubre toda la tarjeta */
+  pointer-events: none;                   /* 36) Desactiva clicks por defecto */
+}
+.hotspot{
+  position: absolute;                     /* 37) Cada <a> se posiciona con top/left */
+  display: block;                         /* 38) Se comporta como caja clicable */
+  pointer-events: auto;                   /* 39) Reactiva clicks sólo en el área */
+  width: 18%;                             /* 40) Tamaño base del botón (ajustable) */
+  aspect-ratio: 1 / 1;                    /* 41) Mantener forma cuadrada */
+  transform: translate(-50%, -50%);       /* 42) Centrado respecto a top/left */
+  /* 43) DEBUG opcional: mostrar bordes
+  outline: 2px dashed rgba(0,0,0,.25);
+  */
+}
+/* 44) Ocultar hotspots cuando se ve el reverso */
+.card.flip .hotspots{ display: none; }
+
+/* 45) Posiciones de cada hotspot (valores relativos en %) */
+/* 46) Ubica cada círculo sobre su icono en la imagen frontal. Ajusta top/left si hace falta. */
+.hs-whatsapp{  left: 20%; top: 72%; }   /* 47) Teléfono/WhatsApp */
+.hs-instagram{ left: 20%; top: 79%; }   /* 48) Instagram */
+.hs-web{       left: 28%; top: 92%; width: 70%; aspect-ratio: auto; } 
+/* 49) Para web cubrimos icono + texto; por eso ancho mayor y sin relación fija */
+
+/* 50) CONSEJO: si quieres ajustar al milímetro en móvil, activa el outline de .hotspot
+      temporalmente y mueve los % de top/left hasta que calcen con tus iconos. */
 
